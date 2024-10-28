@@ -25,3 +25,10 @@ class TestPaymentProcessor(unittest.TestCase):
         
         self.gateway_mock.charge.assert_called_once_with("user123", 100)
 
+    # Test dla pobierania statusu płatności
+    def test_get_payment_status(self):
+        self.gateway_mock.get_status.return_value = TransactionStatus.ZAKOŃCZONA
+        status = self.processor.get_payment_status("txn123")
+        self.assertEqual(status, TransactionStatus.ZAKOŃCZONA)
+        self.gateway_mock.get_status.assert_called_once_with("txn123")
+
